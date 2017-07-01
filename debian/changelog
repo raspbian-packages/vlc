@@ -1,43 +1,72 @@
-vlc (2.2.6-1~deb9u1+rpi1) stretch-staging; urgency=medium
+vlc (2.2.6-2+rpi1) buster-staging; urgency=medium
 
+  [changes brought forward from 2.2.6-1~deb9u1+rpi1 by Peter Michael Green <plugwash@raspbian.org> at Thu, 01 Jun 2017 15:47:33 +0000]
   * Version build-dependency on libsndio-dev so libroar-dev will not satisfy it.
 
- -- Peter Michael Green <plugwash@raspbian.org>  Thu, 01 Jun 2017 15:47:33 +0000
+ -- Raspbian forward porter <root@raspbian.org>  Sat, 01 Jul 2017 23:31:17 +0000
 
-vlc (2.2.6-1~deb9u1) unstable; urgency=high
+vlc (2.2.6-2) unstable; urgency=medium
 
-  * New upstream release.
-    - demux: Fix heap buffer overflows (CVE-2017-8312)
-  * debian/*.maintscript: Bump all versions to 2.2.6-1~z. This is necessary to
-    properly handle symlink to directory conversions once 2.2.6 is available
-    in jessie.
-  * debian/control: Bump Breaks + Replaces to 2.2.6-1~deb9u1 where necessary
-    to ensure proper upgrades from jessie.
-
- -- Sebastian Ramacher <sramacher@debian.org>  Wed, 24 May 2017 18:00:59 +0200
-
-vlc (2.2.5.1-1~deb9u2) unstable; urgency=medium
-
+  * Upload to unstable.
+  * Update to ffmpeg 2.8.12.
   * debian/control:
-    - Bump Breaks + Replaces to 2.2.5.1-1~deb9u1 also in vlc-plugin-qt and
-      vlc-plugin-skins2. Files moved from vlc to those two packages since
-      jessie.
-    - Remove Breaks + Replaces from libvlc-bin. While files moved from vlc-nox
-      to libvlc-bin, they also changed their path.
+    - Remove Build-Conflicts.
+    - Bump Standards-Version.
+  * debian/rules: Build with hardening=+all.
 
- -- Sebastian Ramacher <sramacher@debian.org>  Sat, 20 May 2017 10:41:05 +0200
+ -- Sebastian Ramacher <sramacher@debian.org>  Sun, 18 Jun 2017 18:15:34 +0200
 
-vlc (2.2.5.1-1~deb9u1) unstable; urgency=medium
+vlc (2.2.6-1) experimental; urgency=medium
 
   * New upstream release.
-  * debian/patches/fix-translation.patch: Refreshed.
-  * debian/*.maintscript: Bump all versions to 2.2.5.1-1~z. This is necessary
-    to properly handle symlink to directory conversions once 2.2.5.1 is
-    available in jessie.
-  * debian/control: Bump Breaks + Replaces to 2.2.5.1-1~deb9u1 where necessary
-    to ensure proper upgrades from jessie. (Closes: #862474)
+    - demuxer: Fix heap buffer overflows (CVE-2017-8312).
 
- -- Sebastian Ramacher <sramacher@debian.org>  Sat, 13 May 2017 15:24:45 +0200
+ -- Sebastian Ramacher <sramacher@debian.org>  Wed, 24 May 2017 17:35:55 +0200
+
+vlc (2.2.5.1-1) experimental; urgency=medium
+
+  [ Mateusz Łukasik ]
+  * New upstream release.
+
+  [ Sebastian Ramacher ]
+  * debian/patches: Refreshed.
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Sat, 13 May 2017 15:04:10 +0200
+
+vlc (2.2.5-4) experimental; urgency=medium
+
+  * debian/rules: Revert "Also enable NEON on arm64". (LP: #1685444)
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Sun, 23 Apr 2017 15:52:57 +0200
+
+vlc (2.2.5-3) experimental; urgency=medium
+
+  * Fix typos in changelog.
+  * debian/rules: Also enable NEON on arm64.
+  * debian/control: Build-Conflict with Qt in experimental to work around
+    #858762.
+  * debian/patches:
+    - Use gbp-pq for patch management.
+    - Apply upstream patch for WebVTT support. (Closes: #858963)
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Fri, 07 Apr 2017 19:01:02 +0200
+
+vlc (2.2.5-2) experimental; urgency=medium
+
+  [ Mateusz Łukasik ]
+  * debian/{control,rules,vlc-plugin-video-output.install}: Disable OpenGL
+    ES 1 support, mesa has dropped it. (Closes: #855117)
+
+  [ Sebastian Ramacher ]
+  * debian/: Major package clean up.
+    - Remove vlc-nox binary package.
+    - Update tests to new package layout.
+    - Remove obsolete Breaks+Replaces.
+  * debian/rules: Be explicit about GLES 1
+  * debian/{rules,libvlc-bin.*}: Fix warning about non-empty directory
+    (Closes: #854928)
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Thu, 23 Mar 2017 17:56:16 +0100
 
 vlc (2.2.5-1) unstable; urgency=medium
 

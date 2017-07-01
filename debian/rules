@@ -1,6 +1,7 @@
 #!/usr/bin/make -f
 
 DEB_LDFLAGS_MAINT_APPEND=-Wl,--as-needed
+DEB_BUILD_MAINT_OPTIONS=hardening=+all
 
 include /usr/share/dpkg/pkg-info.mk
 include /usr/share/dpkg/architecture.mk
@@ -50,7 +51,6 @@ confflags += \
 	--enable-freerdp \
 	--enable-freetype \
 	--enable-fribidi \
-	--enable-gles1 \
 	--enable-gles2 \
 	--enable-gnutls \
 	--enable-jack \
@@ -101,6 +101,7 @@ confflags += \
 # decklink: not in Debian
 # dxva2: Windows only
 # fdkaac: in Debian non-free
+# gles1: disabled in mesa
 # gnomevfs: poorly maintained
 # goom: not in Debian
 # gst-decode: not needed when having libavcodec
@@ -117,6 +118,7 @@ confflags += \
 	--disable-decklink \
 	--disable-dxva2 \
 	--disable-fdkaac \
+	--disable-gles1 \
 	--disable-gnomevfs \
 	--disable-goom \
 	--disable-gst-decode \
@@ -328,6 +330,7 @@ endif
 # merge ffmpeg based plugins to reduce installation size
 confflags += --enable-merge-ffmpeg
 
+export DEB_BUILD_MAINT_OPTION
 export DEB_CFLAGS_MAINT_APPEND
 export DEB_CXXFLAGS_MAINT_APPEND
 export DEB_LDFLAGS_MAINT_APPEND
@@ -348,7 +351,7 @@ override_dh_autoreconf:
 override_dh_auto_configure:
 	mkdir -p $(ffmpegbuild) $(ffmpegprefix)
 	cd $(ffmpegbuild) && \
-		$(CURDIR)/ffmpeg-2-8-11/configure $(ffmpegflags)
+		$(CURDIR)/ffmpeg-2-8-12/configure $(ffmpegflags)
 	dh_auto_build --sourcedirectory $(ffmpegbuild) -- V=1
 	$(MAKE) -C $(ffmpegbuild) install-libs install-headers V=1
 	PKG_CONFIG_PATH=$(ffmpegprefix)/lib/pkgconfig \
@@ -400,6 +403,8 @@ ifeq ($(DEB_BUILD_GNU_TYPE), $(DEB_HOST_GNU_TYPE))
 	dh_install -pvlc-bin extras/analyser/_vlc usr/share/zsh/vendor-completions
 endif
 	$(if $(shell dpkg-vendor --is Ubuntu && echo true),dh_install -pvlc-bin debian/source_vlc.py usr/share/apport/package-hooks/)
+	# Create empty directory for plugins.dat
+	mkdir -p debian/libvlc-bin/usr/lib/${DEB_HOST_MULTIARCH}/vlc/plugins
 
 override_dh_installchangelogs:
 	dh_installchangelogs NEWS $(pluginpackages:%=-Nvlc-plugin-%)
@@ -418,6 +423,6 @@ override_dh_installdeb:
 	sed 's/#DEB_HOST_MULTIARCH#/${DEB_HOST_MULTIARCH}/g' \
 		debian/libvlc-bin.postinst.in > debian/libvlc-bin.postinst
 	sed 's/#DEB_HOST_MULTIARCH#/${DEB_HOST_MULTIARCH}/g' \
-		debian/libvlc-bin.postrm.in > debian/libvlc-bin.postrm
+		debian/libvlc-bin.prerm.in > debian/libvlc-bin.prerm
 	echo 'interest-noawait /usr/lib/${DEB_HOST_MULTIARCH}/vlc/plugins' > debian/libvlc-bin.triggers
 	dh_installdeb
