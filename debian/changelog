@@ -1,3 +1,7 @@
+vlc (2.2.6-3+rpi1) buster-staging; urgency=medium
+
+ -- Raspbian forward porter <root@raspbian.org>  Thu, 20 Jul 2017 00:18:39 +0000
+
 vlc (2.2.6-3) unstable; urgency=medium
 
   [ Mateusz Łukasik ]
