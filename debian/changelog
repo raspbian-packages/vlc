@@ -1,6 +1,13 @@
-vlc (2.2.6-4+rpi1) buster-staging; urgency=medium
+vlc (2.2.6-5+rpi1) buster-staging; urgency=medium
 
- -- Raspbian forward porter <root@raspbian.org>  Fri, 01 Sep 2017 08:39:30 +0000
+ -- Raspbian forward porter <root@raspbian.org>  Tue, 05 Sep 2017 12:08:58 +0000
+
+vlc (2.2.6-5) unstable; urgency=medium
+
+  * debian/control: Bump Standards-Version.
+  * debian/patches: Add support for libupnp 1.8. (Closes: #868936)
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Wed, 30 Aug 2017 20:57:06 +0200
 
 vlc (2.2.6-4) unstable; urgency=medium
 
