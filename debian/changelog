@@ -1,6 +1,15 @@
-vlc (2.2.6-6+rpi1) buster-staging; urgency=medium
+vlc (2.2.7-1+rpi1) buster-staging; urgency=medium
 
- -- Raspbian forward porter <root@raspbian.org>  Thu, 14 Sep 2017 21:24:08 +0000
+ -- Raspbian forward porter <root@raspbian.org>  Wed, 22 Nov 2017 11:55:00 +0000
+
+vlc (2.2.7-1) unstable; urgency=high
+
+  * New upstream release.
+    - Fix AVI read/write overflow.
+  * debian/control: Bump Standards-Version.
+  * debian/patches: Remove patches included upstream.
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Sun, 19 Nov 2017 14:05:04 +0100
 
 vlc (2.2.6-6) unstable; urgency=medium
 
