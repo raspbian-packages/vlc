@@ -60,6 +60,10 @@
 #include <dvdread/nav_read.h>
 #include <dvdread/nav_print.h>
 
+#ifndef DVDREAD_VERSION_CODE
+# define DVDREAD_VERSION_CODE(major, minor, micro) (((major) * 10000) + ((minor) * 100) +  ((micro) * 1))
+#endif
+
 #include <assert.h>
 #include <limits.h>
 
