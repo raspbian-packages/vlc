@@ -1,0 +1,24 @@
+From: Jean-Baptiste Kempf <jb@videolan.org>
+Date: Tue, 28 Apr 2020 22:48:08 +0200
+Subject: dvdread: fix compilation with older version < 5.0.3
+
+This is needed for Debian oldstable
+---
+ modules/access/dvdread.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/modules/access/dvdread.c b/modules/access/dvdread.c
+index 8d196f1..8838943 100644
+--- a/modules/access/dvdread.c
++++ b/modules/access/dvdread.c
+@@ -60,6 +60,10 @@
+ #include <dvdread/nav_read.h>
+ #include <dvdread/nav_print.h>
+ 
++#ifndef DVDREAD_VERSION_CODE
++# define DVDREAD_VERSION_CODE(major, minor, micro) (((major) * 10000) + ((minor) * 100) +  ((micro) * 1))
++#endif
++
+ #include <assert.h>
+ #include <limits.h>
+ 
