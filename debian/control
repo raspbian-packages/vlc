@@ -84,7 +84,7 @@ Build-Depends: autopoint,
                libsdl1.2-dev (>= 1.2.10),
                libsecret-1-dev,
                libshine-dev (>= 3.0.0),
-               libshout3-dev,
+               libshout-dev,
                libsidplay2-dev,
                libsmbclient-dev [!hurd-any],
                libsndio-dev,
@@ -131,7 +131,7 @@ Build-Depends: autopoint,
                wayland-protocols [linux-any],
                zlib1g-dev,
                zsh
-Standards-Version: 4.5.0
+Standards-Version: 4.5.1
 Homepage: https://www.videolan.org/vlc/
 Vcs-Git: https://salsa.debian.org/multimedia-team/vlc.git
 Vcs-Browser: https://salsa.debian.org/multimedia-team/vlc
