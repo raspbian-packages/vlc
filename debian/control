@@ -101,7 +101,6 @@ Build-Depends: autopoint,
                libudev-dev [linux-any],
                libupnp-dev,
                libv4l-dev [linux-any],
-               libva-dev [kfreebsd-any linux-any],
                libvcdinfo-dev (>= 0.7.22),
                libvdpau-dev,
                libvncserver-dev (>= 0.9.9),
@@ -131,7 +130,7 @@ Build-Depends: autopoint,
                wayland-protocols [linux-any],
                zlib1g-dev,
                zsh
-Standards-Version: 4.6.0
+Standards-Version: 4.6.1
 Homepage: https://www.videolan.org/vlc/
 Vcs-Git: https://salsa.debian.org/multimedia-team/vlc.git
 Vcs-Browser: https://salsa.debian.org/multimedia-team/vlc
@@ -147,13 +146,13 @@ Depends: vlc-bin (= ${binary:Version}),
 Recommends: vlc-l10n (= ${source:Version}),
             vlc-plugin-access-extra (= ${binary:Version}),
             vlc-plugin-notify (= ${binary:Version}),
-            vlc-plugin-pipewire [linux-any],
             vlc-plugin-samba (= ${binary:Version}) [linux-any kfreebsd-any],
             vlc-plugin-skins2 (= ${binary:Version}),
             vlc-plugin-video-splitter (= ${binary:Version}),
             vlc-plugin-visualization (= ${binary:Version})
 Suggests: vlc-plugin-fluidsynth (= ${source:Version}),
           vlc-plugin-jack (= ${source:Version}),
+          vlc-plugin-pipewire [linux-any],
           vlc-plugin-svg (= ${source:Version})
 Provides: mp3-decoder
 Description: multimedia player and streamer

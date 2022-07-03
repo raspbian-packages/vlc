@@ -1,10 +1,27 @@
-vlc (3.0.17.4-2+rpi1) bookworm-staging; urgency=medium
+vlc (3.0.17.4-4+rpi1) bookworm-staging; urgency=medium
 
   [changes brought forward from 3.0.11.1-1+rpi1 by Peter Michael Green <plugwash@raspbian.org> at Sun, 30 Aug 2020 00:37:35 +0000]
   * Add extern to three functions for gcc-10 compatibility.
   * Partially fix clean target.
 
- -- Raspbian forward porter <root@raspbian.org>  Thu, 19 May 2022 11:03:51 +0000
+ -- Raspbian forward porter <root@raspbian.org>  Sun, 03 Jul 2022 22:45:38 +0000
+
+vlc (3.0.17.4-4) unstable; urgency=medium
+
+  * debian/control: Bump Standards-Version
+  * debian/: Disable libva support
+    vlc's libva support and ffmpeg 5.0 are not compatible.
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Thu, 23 Jun 2022 10:39:09 +0200
+
+vlc (3.0.17.4-3) unstable; urgency=medium
+
+  * debian/control: Move vlc-plugin-pipewire to Suggests
+    The pipewire plugin fails to recognize some configurations where pipewire
+    is available but not used as sound server.
+  * debian/patches: Fix build with caca 0.99.beta20
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Fri, 17 Jun 2022 19:37:03 +0200
 
 vlc (3.0.17.4-2) unstable; urgency=medium
 
