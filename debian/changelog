@@ -1,10 +1,16 @@
-vlc (3.0.18-1+rpi1) bookworm-staging; urgency=medium
+vlc (3.0.18-2+rpi1) bookworm-staging; urgency=medium
 
   [changes brought forward from 3.0.11.1-1+rpi1 by Peter Michael Green <plugwash@raspbian.org> at Sun, 30 Aug 2020 00:37:35 +0000]
   * Add extern to three functions for gcc-10 compatibility.
   * Partially fix clean target.
 
- -- Raspbian forward porter <root@raspbian.org>  Tue, 29 Nov 2022 13:06:55 +0000
+ -- Raspbian forward porter <root@raspbian.org>  Thu, 08 Dec 2022 20:15:04 +0000
+
+vlc (3.0.18-2) unstable; urgency=medium
+
+  * debian/patches: Apply upstream patch for flac playback issues
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Sun, 04 Dec 2022 22:11:55 +0100
 
 vlc (3.0.18-1) unstable; urgency=medium
 
