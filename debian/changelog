@@ -1,10 +1,19 @@
-vlc (3.0.17.4-0+deb11u1+rpi1) bullseye-staging; urgency=medium
+vlc (3.0.18-0+deb11u1+rpi1) bullseye-staging; urgency=medium
 
   [changes brought forward from 3.0.11.1-1+rpi1 by Peter Michael Green <plugwash@raspbian.org> at Sun, 30 Aug 2020 00:37:35 +0000]
   * Add extern to three functions for gcc-10 compatibility.
   * Partially fix clean target.
 
- -- Raspbian forward porter <root@raspbian.org>  Tue, 21 Jun 2022 08:12:23 +0000
+ -- Raspbian forward porter <root@raspbian.org>  Thu, 08 Dec 2022 15:53:18 +0000
+
+vlc (3.0.18-0+deb11u1) bullseye-security; urgency=medium
+
+  * New upstream version 3.0.18
+    - Fix buffer overflow in the vnc module (CVE-2022-41325)
+  * debian/: Remove sndio module
+    The sndio version in bullseye is no longer detected.
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Fri, 02 Dec 2022 22:08:18 +0100
 
 vlc (3.0.17.4-0+deb11u1) bullseye-security; urgency=medium
 
