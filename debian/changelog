@@ -1,10 +1,17 @@
-vlc (3.0.18-0+deb11u1+rpi1) bullseye-staging; urgency=medium
+vlc (3.0.20-0+deb11u1+rpi1) bullseye-staging; urgency=medium
 
   [changes brought forward from 3.0.11.1-1+rpi1 by Peter Michael Green <plugwash@raspbian.org> at Sun, 30 Aug 2020 00:37:35 +0000]
   * Add extern to three functions for gcc-10 compatibility.
   * Partially fix clean target.
 
- -- Raspbian forward porter <root@raspbian.org>  Thu, 08 Dec 2022 15:53:18 +0000
+ -- Raspbian forward porter <root@raspbian.org>  Thu, 09 Nov 2023 19:48:40 +0000
+
+vlc (3.0.20-0+deb11u1) bullseye-security; urgency=medium
+
+  * New upstream version 3.0.19
+    - Fix potential security issue (OOB Write) on MMS://
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Thu, 02 Nov 2023 00:13:56 +0100
 
 vlc (3.0.18-0+deb11u1) bullseye-security; urgency=medium
 
