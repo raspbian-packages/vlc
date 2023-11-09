@@ -1,10 +1,20 @@
-vlc (3.0.18-2+rpi1) bookworm-staging; urgency=medium
+vlc (3.0.20-0+deb12u1+rpi1) bookworm-staging; urgency=medium
 
   [changes brought forward from 3.0.11.1-1+rpi1 by Peter Michael Green <plugwash@raspbian.org> at Sun, 30 Aug 2020 00:37:35 +0000]
   * Add extern to three functions for gcc-10 compatibility.
   * Partially fix clean target.
 
- -- Raspbian forward porter <root@raspbian.org>  Thu, 08 Dec 2022 20:15:04 +0000
+ -- Raspbian forward porter <root@raspbian.org>  Thu, 09 Nov 2023 21:03:58 +0000
+
+vlc (3.0.20-0+deb12u1) bookworm-security; urgency=medium
+
+  * New upstream version 3.0.20
+    - Improve muxing timestamps in a few formats (Closes: #1054528)
+    - Fix potential security issue (OOB Write) on MMS://
+  * debian/gbp.conf: Work in bookworm branch
+  * debian/patches: Drop patches included upstream
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Sun, 29 Oct 2023 21:14:38 +0100
 
 vlc (3.0.18-2) unstable; urgency=medium
 
