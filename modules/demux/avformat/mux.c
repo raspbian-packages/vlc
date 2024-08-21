@@ -74,12 +74,18 @@ static int AddStream( sout_mux_t *, sout_input_t * );
 static void DelStream( sout_mux_t *, sout_input_t * );
 static int Mux      ( sout_mux_t * );
 
+#if FF_API_AVIO_WRITE_NONCONST
 static int IOWrite( void *opaque, uint8_t *buf, int buf_size );
-static int64_t IOSeek( void *opaque, int64_t offset, int whence );
 #if LIBAVFORMAT_VERSION_CHECK( 57, 7, 0, 40, 100 )
 static int IOWriteTyped(void *opaque, uint8_t *buf, int buf_size,
-                              enum AVIODataMarkerType type, int64_t time);
+                        enum AVIODataMarkerType type, int64_t time);
 #endif
+#else
+static int IOWrite( void *opaque, const uint8_t *buf, int buf_size );
+int IOWriteTyped(void *opaque, const uint8_t *buf, int buf_size,
+                 enum AVIODataMarkerType type, int64_t time);
+#endif
+static int64_t IOSeek( void *opaque, int64_t offset, int whence );
 
 /*****************************************************************************
  * Open
@@ -267,7 +273,11 @@ static int AddStream( sout_mux_t *p_mux, sout_input_t *p_input )
     {
     case AUDIO_ES:
         codecpar->codec_type = AVMEDIA_TYPE_AUDIO;
+#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT( 59, 24, 100 ) && LIBAVCODEC_VERSION_MICRO >= 100
+        av_channel_layout_default( &codecpar->ch_layout, fmt->audio.i_channels );
+#else
         codecpar->channels = fmt->audio.i_channels;
+#endif
         codecpar->sample_rate = fmt->audio.i_rate;
         stream->time_base = (AVRational){1, codecpar->sample_rate};
         if (fmt->i_bitrate == 0) {
@@ -407,8 +417,13 @@ static int MuxBlock( sout_mux_t *p_mux, sout_input_t *p_input )
 }
 
 #if LIBAVFORMAT_VERSION_CHECK( 57, 7, 0, 40, 100 )
+#if FF_API_AVIO_WRITE_NONCONST
 int IOWriteTyped(void *opaque, uint8_t *buf, int buf_size,
                               enum AVIODataMarkerType type, int64_t time)
+#else
+int IOWriteTyped(void *opaque, const uint8_t *buf, int buf_size,
+                 enum AVIODataMarkerType type, int64_t time)
+#endif
 {
     VLC_UNUSED(time);
 
@@ -508,7 +523,11 @@ static int Control( sout_mux_t *p_mux, int i_query, va_list args )
 /*****************************************************************************
  * I/O wrappers for libavformat
  *****************************************************************************/
+#if FF_API_AVIO_WRITE_NONCONST
 static int IOWrite( void *opaque, uint8_t *buf, int buf_size )
+#else
+static int IOWrite( void *opaque, const uint8_t *buf, int buf_size )
+#endif
 {
     sout_mux_t *p_mux = opaque;
     sout_mux_sys_t *p_sys = p_mux->p_sys;
