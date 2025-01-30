@@ -56,12 +56,12 @@ static inline void fill_extra_data_alac( mkv_track_t *p_tk )
     if( unlikely( !p_tk->fmt.p_extra ) ) return;
     p_tk->fmt.i_extra = p_tk->i_extra_data + 12;
     uint8_t *p_extra = static_cast<uint8_t*>( p_tk->fmt.p_extra );
-    /* See "ALAC Specific Info (36 bytes) (required)" from
-       alac.macosforge.org/trac/browser/trunk/ALACMagicCookieDescription.txt */
+    /* 12 bytes + "ALAC Specific Info (24 bytes) (required)" from
+       https://github.com/macosforge/alac/blob/master/ALACMagicCookieDescription.txt */
     SetDWBE( p_extra, p_tk->fmt.i_extra );
     memcpy( p_extra + 4, "alac", 4 );
-    SetDWBE( p_extra + 8, 0 );
-    memcpy( p_extra + 12, p_tk->p_extra_data, p_tk->fmt.i_extra - 12 );
+    SetDWBE( p_extra + 8, p_tk->i_extra_data );
+    memcpy( p_extra + 12, p_tk->p_extra_data, p_tk->i_extra_data );
 }
 
 static inline void fill_extra_data( mkv_track_t *p_tk, unsigned int offset )
@@ -1257,6 +1257,9 @@ void matroska_segment_c::ParseChapterAtom( int i_level, KaxChapterAtom *ca, chap
         {
             debug( vars, "ChapterProcess" );
 
+            if ( !var_InheritBool( vars.p_demuxer, "mkv-use-chapter-codec") )
+                return;
+
             chapter_codec_cmds_c *p_ccodec = NULL;
 
             for( size_t j = 0; j < cp.ListSize(); j++ )
@@ -1618,6 +1621,8 @@ bool matroska_segment_c::TrackInit( mkv_track_t * p_tk )
             vars.p_tk->b_pts_only = true;
 
             fill_extra_data( vars.p_tk, 0 );
+            if (vars.p_fmt->i_extra <= 4)
+                vars.p_fmt->b_packetized = false; // force full extradata by the packetizer
         }
         S_CASE("V_MPEG4/MS/V3") {
             vars.p_fmt->i_codec = VLC_CODEC_DIV3;
@@ -2031,7 +2036,7 @@ bool matroska_segment_c::TrackInit( mkv_track_t * p_tk )
         }
         S_CASE("A_QUICKTIME/QDMC") {
             vars.p_fmt->i_cat   = AUDIO_ES;
-            vars.p_fmt->i_codec = VLC_FOURCC('Q','D','M','C');
+            vars.p_fmt->i_codec = VLC_CODEC_QDMC;
 
             fill_extra_data( vars.p_tk, 0 );
         }
@@ -2063,7 +2068,7 @@ bool matroska_segment_c::TrackInit( mkv_track_t * p_tk )
         }
         S_CASE("S_TEXT/USF") {
             ONLY_FMT(SPU);
-            vars.p_tk->fmt.i_codec = VLC_FOURCC( 'u', 's', 'f', ' ' );
+            vars.p_tk->fmt.i_codec = VLC_CODEC_USF;
             vars.p_tk->fmt.subs.psz_encoding = strdup( "UTF-8" );
             fill_extra_data( vars.p_tk, 0 );
         }

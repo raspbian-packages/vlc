@@ -52,8 +52,7 @@
 
 # define HAVE_AVUTIL_CODEC_ATTACHMENT 1
 
-#if LIBAVFORMAT_VERSION_MICRO >= 100 && \
-    LIBAVFORMAT_VERSION_INT >= AV_VERSION_INT(59, 0, 100)
+#if LIBAVFORMAT_VERSION_CHECK(59, 0, 100)
 # define AVF_MAYBE_CONST const
 #else
 # define AVF_MAYBE_CONST
@@ -401,7 +400,7 @@ int avformat_OpenDemux( vlc_object_t *p_this )
             es_format_Init( &es_fmt, AUDIO_ES, fcc );
             es_fmt.i_original_fourcc = CodecTagToFourcc( cp->codec_tag );
             es_fmt.i_bitrate = cp->bit_rate;
-#if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT( 59, 24, 100 ) && LIBAVCODEC_VERSION_MICRO >= 100
+#if LIBAVCODEC_VERSION_CHECK(59, 24, 100)
             es_fmt.audio.i_channels = cp->ch_layout.nb_channels;
 #else
             es_fmt.audio.i_channels = cp->channels;

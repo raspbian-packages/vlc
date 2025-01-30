@@ -713,12 +713,13 @@ static int Open( vlc_object_t * p_this )
                 }
                 else
                 {
-                    tk->fmt.i_codec = p_bih->biCompression;
+                    tk->fmt.i_codec = vlc_fourcc_GetCodec(VIDEO_ES, p_bih->biCompression);
                     if( tk->fmt.i_codec == VLC_CODEC_MP4V &&
                         !strncasecmp( (char*)&p_strh->i_handler, "XVID", 4 ) )
                     {
                         tk->fmt.i_codec           =
                         tk->fmt.i_original_fourcc = VLC_FOURCC( 'X', 'V', 'I', 'D' );
+                        tk->fmt.b_packetized = false;
                     }
 
                     /* Shitty files storing chroma in biCompression */
@@ -737,7 +738,8 @@ static int Open( vlc_object_t * p_this )
                 tk->fmt.video.i_width  = p_bih->biWidth;
                 tk->fmt.video.i_visible_height =
                 tk->fmt.video.i_height = p_bih->biHeight;
-                tk->fmt.video.i_bits_per_pixel = p_bih->biBitCount;
+                if( p_bih->biBitCount <= 32 )
+                    tk->fmt.video.i_bits_per_pixel = p_bih->biBitCount;
                 tk->fmt.video.i_frame_rate = tk->i_rate;
                 tk->fmt.video.i_frame_rate_base = tk->i_scale;
 

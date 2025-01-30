@@ -39,7 +39,8 @@
 #include <libavcodec/avcodec.h>
 #include <libavutil/mem.h>
 #include <libavutil/pixdesc.h>
-#if (LIBAVUTIL_VERSION_MICRO >= 100 && LIBAVUTIL_VERSION_INT >= AV_VERSION_INT( 55, 16, 101 ) )
+#include "avcommon_compat.h"
+#if LIBAVUTIL_VERSION_CHECK( 55, 16, 101 )
 #include <libavutil/mastering_display_metadata.h>
 #endif
 
@@ -257,12 +258,12 @@ static int lavc_GetVideoFormat(decoder_t *dec, video_format_t *restrict fmt,
         case AVCOL_TRC_BT2020_12:
             fmt->transfer = TRANSFER_FUNC_BT2020;
             break;
-#if LIBAVUTIL_VERSION_CHECK( 55, 14, 0, 31, 100)
+#if LIBAV_UTIL_VERSION_CHECK( 55, 14, 0, 31, 100)
         case AVCOL_TRC_ARIB_STD_B67:
             fmt->transfer = TRANSFER_FUNC_ARIB_B67;
             break;
 #endif
-#if LIBAVUTIL_VERSION_CHECK( 55, 17, 0, 37, 100)
+#if LIBAV_UTIL_VERSION_CHECK( 55, 17, 0, 37, 100)
         case AVCOL_TRC_SMPTE2084:
             fmt->transfer = TRANSFER_FUNC_SMPTE_ST2084;
             break;
@@ -687,7 +688,7 @@ static int ffmpeg_OpenVa(decoder_t *p_dec, AVCodecContext *p_context,
 static const enum PixelFormat hwfmts[] =
 {
 #ifdef _WIN32
-#if LIBAVUTIL_VERSION_CHECK(54, 13, 1, 24, 100)
+#if LIBAV_UTIL_VERSION_CHECK(54, 13, 1, 24, 100)
     AV_PIX_FMT_D3D11VA_VLD,
 #endif
     AV_PIX_FMT_DXVA2_VLD,
@@ -995,7 +996,7 @@ static int DecodeSidedata( decoder_t *p_dec, const AVFrame *frame, picture_t *p_
     decoder_sys_t *p_sys = p_dec->p_sys;
     bool format_changed = false;
 
-#if (LIBAVUTIL_VERSION_MICRO >= 100 && LIBAVUTIL_VERSION_INT >= AV_VERSION_INT( 55, 16, 101 ) )
+#if LIBAVUTIL_VERSION_CHECK( 55, 16, 101 )
 #define FROM_AVRAT(default_factor, avrat) \
 (uint64_t)(default_factor) * (avrat).num / (avrat).den
     const AVFrameSideData *metadata =
@@ -1050,7 +1051,7 @@ static int DecodeSidedata( decoder_t *p_dec, const AVFrame *frame, picture_t *p_
 #undef FROM_AVRAT
     }
 #endif
-#if (LIBAVUTIL_VERSION_MICRO >= 100 && LIBAVUTIL_VERSION_INT >= AV_VERSION_INT( 55, 60, 100 ) )
+#if LIBAVUTIL_VERSION_CHECK( 55, 60, 100 )
     const AVFrameSideData *metadata_lt =
             av_frame_get_side_data( frame,
                                     AV_FRAME_DATA_CONTENT_LIGHT_LEVEL );
@@ -1113,17 +1114,20 @@ static picture_t *DecodeBlock( decoder_t *p_dec, block_t **pp_block, bool *error
     bool eos_spotted = false;
 
 
-    block_t *p_block;
+    block_t *p_block = pp_block ? *pp_block : NULL;
     vlc_tick_t current_time;
 
     if( !p_context->extradata_size && p_dec->fmt_in.i_extra )
     {
         ffmpeg_InitCodec( p_dec );
-        if( !avcodec_is_open( p_context ) )
-            OpenVideoCodec( p_dec );
+        if( !avcodec_is_open( p_context ) && OpenVideoCodec(p_dec) < 0 )
+        {
+            if( p_block != NULL )
+                block_Release( p_block );
+            return NULL;
+        }
     }
 
-    p_block = pp_block ? *pp_block : NULL;
     if(!p_block && !(p_sys->p_codec->capabilities & AV_CODEC_CAP_DELAY) )
         return NULL;
 
@@ -1306,7 +1310,7 @@ static picture_t *DecodeBlock( decoder_t *p_dec, block_t **pp_block, bool *error
         }
 
         /* Compute the PTS */
-#if LIBAVCODEC_VERSION_CHECK(57, 24, 0, 61, 100)
+#if LIBAV_CODEC_VERSION_CHECK(57, 24, 0, 61, 100)
 # if LIBAVCODEC_VERSION_MICRO >= 100
         vlc_tick_t i_pts = frame->best_effort_timestamp;
 # else
@@ -1823,8 +1827,7 @@ no_reuse:
     if (!can_hwaccel)
         return swfmt;
 
-#if (LIBAVCODEC_VERSION_MICRO >= 100) \
-  && (LIBAVCODEC_VERSION_INT < AV_VERSION_INT(57, 83, 101))
+#if (LIBAVCODEC_VERSION_MICRO >= 100) && !(LIBAVCODEC_VERSION_CHECK(57, 83, 101))
     if (p_context->active_thread_type)
     {
         msg_Warn(p_dec, "thread type %d: disabling hardware acceleration",
