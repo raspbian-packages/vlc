@@ -1,10 +1,25 @@
-vlc (3.0.21-7+rpi1) trixie-staging; urgency=medium
+vlc (3.0.21-9+rpi1) trixie-staging; urgency=medium
 
   [changes brought forward from 3.0.11.1-1+rpi1 by Peter Michael Green <plugwash@raspbian.org> at Sun, 30 Aug 2020 00:37:35 +0000]
   * Add extern to three functions for gcc-10 compatibility.
   * Partially fix clean target.
 
- -- Raspbian forward porter <root@raspbian.org>  Thu, 30 Jan 2025 16:42:09 +0000
+ -- Raspbian forward porter <root@raspbian.org>  Wed, 12 Mar 2025 03:03:22 +0000
+
+vlc (3.0.21-9) unstable; urgency=medium
+
+  * Revert "Bump to lua5.4"
+    The vlc script ecosystem expects certain versions of lua and lua5.4 is not
+    one of them.
+
+ -- Sebastian Ramacher <sramacher@debian.org>  Fri, 07 Mar 2025 07:31:22 +0100
+
+vlc (3.0.21-8) unstable; urgency=medium
+
+  * Team upload
+  * Bump to lua5.4
+
+ -- Bastian Germann <bage@debian.org>  Fri, 07 Mar 2025 01:01:48 +0100
 
 vlc (3.0.21-7) unstable; urgency=medium
 
