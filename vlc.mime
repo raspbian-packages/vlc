@@ -1,0 +1,25 @@
+video/mpeg; vlc %s; description="MPEG Video"; test=test -n "$DISPLAY"; priority=7
+video/x-mpeg; vlc %s; description="MPEG Video"; test=test -n "$DISPLAY"; priority=7
+video/mpeg-system; vlc %s; description="MPEG Video"; test=test -n "$DISPLAY"; priority=7
+video/x-mpeg-system; vlc %s; description="MPEG Video"; test=test -n "$DISPLAY"; priority=7
+
+audio/x-wav; vlc %s; description="WAV Audio"; nametemplate=%s.wav; test=test -n "$DISPLAY"; priority=7
+
+video/mpeg4; vlc %s; description="MPEG-4 Video"; test=test -n "$DISPLAY"; priority=7
+audio/mpeg; vlc %s; description="MPEG Audio"; nametemplate=%s.mpg; test=test -n "$DISPLAY"; priority=7
+audio/mpegurl; vlc %s; description="MPEG Audio URL"; nametemplate=%s.m3u; test=test -n "$DISPLAY"; priority=7
+audio/x-mp3; vlc %s; nametemplate=%s.mp3; description="MPEG Audio"; test=test -n "$DISPLAY"; priority=7
+audio/mpeg4; vlc %s; description="MPEG-4 Audio"; test=test -n "$DISPLAY"; priority=7
+application/mpeg4-iod; vlc %s; description="MPEG-4 Video"; test=test -n "$DISPLAY"; priority=7
+application/mpeg4-muxcodetable; vlc %s; description="MPEG-4 Video"; test=test -n "$DISPLAY"; priority=7
+
+video/x-msvideo; vlc %s; description="MS Video (AVI)"; test=test -n "$DISPLAY"; priority=4
+
+video/quicktime; vlc %s; description="Apple Quicktime Video"; test=test -n "$DISPLAY"; priority=4
+
+application/ogg; vlc %s; nametemplate=%s.ogg; description="Ogg stream"; test=test -n "$DISPLAY"; priority=4
+application/x-ogg; vlc %s; nametemplate=%s.ogg; description="Ogg stream"; test=test -n "$DISPLAY"; priority=4
+video/ogg; vlc %s; description="Ogg Video"; test=test -n "$DISPLAY"; priority=4
+
+application/x-ms-asf-plugin; vlc %s; description="Windows Media Video"; test=test -n "$DISPLAY"; priority=4
+application/x-mplayer2; vlc %s; description="Windows Media"; test=test -n "$DISPLAY"; priority=4
