@@ -505,13 +505,17 @@ static void SubpictureUpdate( subpicture_t *p_subpic,
     /* Allocate the regions and draw them */
     subpicture_region_t **pp_region_last = &p_subpic->p_region;
 
+    video_format_t fmt_region;
+    fmt_region = fmt;
+    fmt_region.transfer = TRANSFER_FUNC_SRGB;
+    fmt_region.primaries = COLOR_PRIMARIES_SRGB;
+    fmt_region.space = COLOR_SPACE_SRGB;
+    fmt_region.b_color_range_full = true;
     for( int i = 0; i < i_region; i++ )
     {
         subpicture_region_t *r;
-        video_format_t fmt_region;
 
         /* */
-        fmt_region = fmt;
         fmt_region.i_width =
         fmt_region.i_visible_width  = region[i].x1 - region[i].x0;
         fmt_region.i_height =
@@ -771,6 +775,9 @@ static void OldEngineClunkyRollInfoPatch( decoder_t *p_dec, ASS_Track *p_track )
 
     stream_t *p_memstream = vlc_stream_MemoryNew( p_dec, p_dec->fmt_in.p_extra,
                                                   p_dec->fmt_in.i_extra, true );
+    if (unlikely(!p_memstream))
+        return;
+
     char *s = vlc_stream_ReadLine( p_memstream );
     unsigned playres[2] = {0, 0};
     bool b_hotfix = false;
