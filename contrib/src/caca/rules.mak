@@ -19,6 +19,7 @@ $(TARBALLS)/libcaca-$(CACA_VERSION).tar.gz:
 
 caca: libcaca-$(CACA_VERSION).tar.gz .sum-caca
 	$(UNPACK)
+	$(UPDATE_AUTOCONFIG) && cd $(UNPACK_DIR) && mv config.guess config.sub .auto
 	$(APPLY) $(SRC)/caca/caca-fix-compilation-llvmgcc.patch
 	$(APPLY) $(SRC)/caca/caca-fix-pkgconfig.patch
 	$(call pkg_static,"caca/caca.pc.in")
@@ -46,7 +47,9 @@ CACA_CONF += --disable-x11
 endif
 ifdef HAVE_WIN32
 CACA_CONF += --disable-ncurses \
+    ac_cv_func_sprintf=yes \
     ac_cv_func_vsnprintf_s=yes \
+    ac_cv_func_vsnprintf=yes \
     ac_cv_func_sprintf_s=yes
 endif
 ifdef HAVE_LINUX
@@ -60,6 +63,8 @@ CACA_CONF += \
 	CPPFLAGS="$(CPPFLAGS) -DCACA_STATIC"
 
 .caca: caca
-	cd $< && $(HOSTVARS) ./configure $(HOSTCONF) $(CACA_CONF)
-	cd $< && $(MAKE) -C $< install
+	$(MAKEBUILDDIR)
+	$(MAKECONFIGURE) $(CACA_CONF)
+	+$(MAKEBUILD) -C $<
+	+$(MAKEBUILD) -C $< install
 	touch $@

@@ -10,8 +10,11 @@
 #   - Add it to DEPS_res
 
 SUFFIXES += .ui .h .hpp .moc.cpp
+EXTRA_DIST += gui/qt/qt6.pro gui/qt/private-gui.pro
 
 libqt_plugin_la_CPPFLAGS = $(AM_CPPFLAGS) \
+	-DQT_USE_QSTRINGBUILDER \
+	-DQT_NO_CAST_FROM_BYTEARRAY \
 	-I$(srcdir)/gui/qt -I$(builddir)/gui/qt
 libqt_plugin_la_CXXFLAGS = $(AM_CXXFLAGS) $(QT_CFLAGS) $(CXXFLAGS_qt)
 libqt_plugin_la_LIBADD = $(QT_LIBS) $(LIBS_qt) $(LIBM)
@@ -37,6 +40,10 @@ libqt_plugin_la_LIBADD += $(LIBCOM) -lcomctl32 -luuid
 endif
 if UPDATE_CHECK
 libqt_plugin_la_CPPFLAGS += -DUPDATE_CHECK
+endif
+
+if HAVE_QT_GUI_PRIVATE
+libqt_plugin_la_CPPFLAGS += -DQT_GUI_PRIVATE $(QT_GUI_PRIVATE_CFLAGS)
 endif
 
 libqt_plugin_la_SOURCES = \

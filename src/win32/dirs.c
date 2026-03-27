@@ -216,7 +216,7 @@ static char *config_GetShellDir (int csidl)
 {
     wchar_t wdir[MAX_PATH];
 
-    if (SHGetFolderPathW (NULL, csidl | CSIDL_FLAG_CREATE,
+    if (SHGetFolderPathW (NULL, csidl,
                           NULL, SHGFP_TYPE_CURRENT, wdir ) == S_OK)
         return FromWide (wdir);
     return NULL;
@@ -226,17 +226,22 @@ static char *config_GetAppDir (void)
 {
 #if !VLC_WINSTORE_APP
     /* if portable directory exists, use it */
-    TCHAR path[MAX_PATH];
-    if (GetModuleFileName (NULL, path, MAX_PATH))
+    WCHAR path[MAX_PATH];
+    if (GetModuleFileNameW (NULL, path, MAX_PATH))
     {
-        TCHAR *lastDir = _tcsrchr (path, '\\');
+        WCHAR *lastDir = wcsrchr (path, L'\\');
         if (lastDir)
         {
-            _tcscpy (lastDir + 1, TEXT("portable"));
-            DWORD attrib = GetFileAttributes (path);
-            if (attrib != INVALID_FILE_ATTRIBUTES &&
-                    (attrib & FILE_ATTRIBUTE_DIRECTORY))
-                return FromT (path);
+            *lastDir = L'\0';
+            size_t pathlen = wcslen(path);
+            if ( pathlen + 1 + wcslen(L"\\portable" ) <= MAX_PATH )
+            {
+                wcscpy( &path[pathlen], L"\\portable" );
+                DWORD attrib = GetFileAttributesW (path);
+                if (attrib != INVALID_FILE_ATTRIBUTES &&
+                        (attrib & FILE_ATTRIBUTE_DIRECTORY))
+                    return FromWide (path);
+            }
         }
     }
 #endif
