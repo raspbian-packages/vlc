@@ -1,0 +1,5 @@
+0001-configure-fix-linking-on-RISC-V-ISA.patch
+0002-Do-not-generate-cache-during-build.patch
+0003-Bump-module-ABI-for-time_t-transition.patch
+0004-buildsystem-detect-new-libspatialaudio.patch
+0005-modules-spatialaudio-compat-with-new-API.patch
