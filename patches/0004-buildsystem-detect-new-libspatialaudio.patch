@@ -1,0 +1,36 @@
+From: Marvin Scholz <epirat07@gmail.com>
+Date: Thu, 5 Feb 2026 16:33:37 +0100
+Subject: buildsystem: detect new libspatialaudio
+
+We can use the presence of the version header to detect libspatialaudio
+0.4.0 or higher. (For more granular checks in the future, the defines
+from the version header can be checked)
+
+(cherry picked from commit 93c2e6ec320016a3b3a3764db44fc7434d37d031) (edited)
+edited:
+- VLC 3 doesn't have meson
+Signed-off-by: Steve Lhomme <robux4@ycbcr.xyz>
+---
+ configure.ac | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index 6948788..f81341d 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2896,6 +2896,15 @@ dnl  Ambisonic channel mixer and binauralizer plugin
+ dnl
+ PKG_ENABLE_MODULES_VLC([SPATIALAUDIO], [], [spatialaudio], [Ambisonic channel mixer and binauralizer], [auto])
+ 
++AS_IF([test -n ${SPATIALAUDIO_CFLAGS+set}], [
++    VLC_SAVE_FLAGS
++    AX_APPEND_FLAG([$SPATIALAUDIO_CFLAGS], [CFLAGS])
++    AC_CHECK_HEADER([spatialaudio/SpatialaudioVersion.h], [
++        AX_APPEND_FLAG([-DHAVE_SPATIALAUDIOVERSION_H=1], [SPATIALAUDIO_CFLAGS])
++    ])
++    VLC_RESTORE_FLAGS
++])
++
+ dnl
+ dnl  theora decoder plugin
+ dnl
